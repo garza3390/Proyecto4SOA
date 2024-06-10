@@ -11,6 +11,18 @@ function getLoggedInUserName() {
       .catch(error => console.error('Error al obtener los datos de la API:', error));
   }
 
+  function obtenerDatosAPIConJWT(url, token, callback) {
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + token
+        }
+    })
+    .then(response => response.json())
+    .then(data => callback(data))
+    .catch(error => console.error('Error al obtener los datos de la API:', error));
+}
+
   // Función para generar la lista de platos
   function generarListaPlatos(platos, contenedorId) {
     var ul = document.getElementById(contenedorId);
@@ -24,9 +36,12 @@ function getLoggedInUserName() {
   // URL de la API
   var apiUrl = "https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/menu";
 
-  // Llamar a la función para obtener los datos de la API y generar las listas de platos
-  obtenerDatosAPI(apiUrl, function(data) {
-    generarListaPlatos(data.desserts, "postres");
-    generarListaPlatos(data.drinks, "bebidas");
-    generarListaPlatos(data.maindishes, "platos_principales");
+  // Obtener el token JWT del Local Storage
+  var token = localStorage.getItem('token');
+
+  // Llamar a la función para obtener los datos de la API con autenticación JWT y generar las listas de platos
+  obtenerDatosAPIConJWT(apiUrl, token, function(data) {
+      generarListaPlatos(data.desserts, "postres");
+      generarListaPlatos(data.drinks, "bebidas");
+      generarListaPlatos(data.maindishes, "platos_principales");
   });

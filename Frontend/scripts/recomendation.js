@@ -1,5 +1,6 @@
 function cerrarSesion() {
     localStorage.removeItem("username");
+    localStorage.removeItem("token");
     window.location.href = "/";
   }
 
@@ -17,6 +18,10 @@ function cerrarSesion() {
    function getLoggedInUserName() {
       return localStorage.getItem('username');
   }
+
+  function getAuthToken() {
+    return localStorage.getItem("token");
+ }
 
   // Función para redirigir según el tipo de usuario
   function redirectToReservationPage() {
@@ -51,58 +56,71 @@ function cerrarSesion() {
     button.classList.toggle('checked');
   }
 
-  function obtenerRecomendacion_2_values() {
-    const value1 = document.getElementById("value1Input").value;
-    const value2 = document.getElementById("value2Input").value;
   
-    let apiUrl_2_values = `https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/comida1?value1=${value1}&value2=${value2}`;
+
+  async function fetchWithJWT(url, options) {
+    const token = getAuthToken();
+
+    if (!token) {
+        throw new Error('Token JWT no encontrado');
+    }
+
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    };
+
+    const requestOptions = Object.assign({}, options, { headers });
+
+    const response = await fetch(url, requestOptions);
+    
+    if (!response.ok) {
+        throw new Error('Error en la solicitud: ' + response.statusText);
+    }
+
+    return await response.json();
+}
+
+
+function obtenerRecomendacion_2_values() {
+  const value1 = document.getElementById("value1Input").value;
+  const value2 = document.getElementById("value2Input").value;
+
+  const apiUrl_2_values = `https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/comida1?value1=${value1}&value2=${value2}`;
   
-    
-    fetch(apiUrl_2_values)
-      .then(response => {
-        if (!response.ok) {
-          alert('Error al obtener los datos');
-          throw new Error('Error al obtener los datos');
-        }
-        return response.json();
-      })
-      .then(data => {
-        mostrarRespuesta(data);
-      })
-      .catch(error => {
-        alert(error);
-        console.error('Error:', error);
-      });
-    
-    document.getElementById("value1Input").value = "";
-    document.getElementById("value2Input").value = "";
-  }
+  fetchWithJWT(apiUrl_2_values, { method: 'GET' })
+    .then(data => {
+      mostrarRespuesta(data);
+    })
+    .catch(error => {
+      alert('Error al obtener los datos: ' + error.message);
+      console.error('Error:', error);
+    });
+  
+  document.getElementById("value1Input").value = "";
+  document.getElementById("value2Input").value = "";
+}
 
-  function obtenerRecomendacion_type_value() {
-    const value = document.getElementById("valueInput").value;
-    const type = document.getElementById("typeInput").value;    
+function obtenerRecomendacion_type_value() {
+  const value = document.getElementById("valueInput").value;
+  const type = document.getElementById("typeInput").value;    
 
-    let apiUrl_type_value = `https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/comida2?type=${type}&value=${value}`;    
+  const apiUrl_type_value = `https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/comida2?type=${type}&value=${value}`;
 
-    fetch(apiUrl_type_value)
-      .then(response => {
-        if (!response.ok) {
-          alert('Error al obtener los datos');
-          throw new Error('Error al obtener los datos');
-        }
-        return response.json();
-      })
-      .then(data => {
-        mostrarRespuesta(data);
-      })
-      .catch(error => {
-        alert(error);
-        console.error('Error:', error);
-      });
+  fetchWithJWT(apiUrl_type_value, { method: 'GET' })
+    .then(data => {
+      mostrarRespuesta(data);
+    })
+    .catch(error => {
+      alert('Error al obtener los datos: ' + error.message);
+      console.error('Error:', error);
+    });
 
-    document.getElementById("typeInput").value = "";
-    document.getElementById("valueInput").value = "";
-  }
+  document.getElementById("typeInput").value = "";
+  document.getElementById("valueInput").value = "";
+}
+
+
 
   function mostrarRespuesta(data) {
     const resultadoTexto = document.getElementById("resultadoTexto");

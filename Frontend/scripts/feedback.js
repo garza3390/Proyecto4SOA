@@ -50,11 +50,24 @@ function getLoggedInUserName() {
     const opinion = document.getElementById('opinion').value;
     //const apiUrl = 'https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/feedback';
     const apiUrl = 'https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/feedback';
-    // Objeto con la información de la solicitud
+    
+    // Obtener el token JWT del Local Storage
+    const token = localStorage.getItem('token');
+
+    // Verificar si el token está presente en el Local Storage
+    if (!token) {
+        // Si no hay token, mostrar un mensaje de error y detener la función
+        console.error('Token JWT no encontrado en el Local Storage');
+        alert('Token JWT no encontrado. Inicia sesión antes de enviar comentarios.');
+        return;
+    }
+
+    // Objeto con la información de la solicitud, incluyendo el token JWT en el encabezado 'Authorization'
     const requestOptions = {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Agrega el token JWT en el encabezado 'Authorization'
         },
         body: JSON.stringify({ text: opinion })
     };

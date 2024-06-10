@@ -1,13 +1,18 @@
 // Función para enviar solicitudes al backend
+// Función para enviar solicitudes al backend
 async function sendRequest(url, data) {
     try {
-        const response = await fetch(url, {
+        const token = localStorage.getItem('token'); // Obtener el token JWT del Local Storage
+        const requestOptions = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Agregar el token JWT en el encabezado 'Authorization'
             },
             body: JSON.stringify(data)
-        });
+        };
+
+        const response = await fetch(url, requestOptions);
         if (!response.ok) {
             throw new Error('Error en la solicitud: ' + response.statusText);
         }
@@ -17,6 +22,7 @@ async function sendRequest(url, data) {
         alert('Error en la solicitud: ' + error.message);
     }
 }
+
 
 /*
 document.getElementById("login-form").addEventListener("submit", function(event) {
@@ -58,7 +64,8 @@ document.getElementById("login-form").addEventListener("submit", async function(
             const response = await sendRequest("https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/login", data);
 
             // Verificar el estado de la respuesta
-            if (response) {
+            if (response && response.token) {
+                localStorage.setItem("token", response.token);
                 localStorage.setItem("username", emailLogin);
                 console.log("Inicio de sesión exitoso. Usuario:", emailLogin);
 
