@@ -1,22 +1,28 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const jwt = require('jsonwebtoken');
 
 const app = express();
 app.use(bodyParser.json());
 
-/*
-app.use((req, res, next) => {
-    res.setHeader(
-      'Content-Security-Policy',
-      "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'"
-    );
-    next();
-  });
-*/
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// Middleware de autenticación JWT
+const authenticateToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+    if (!token) return res.sendStatus(401);
+
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+};
+
 
 // Ruta para obtener el horario
-app.get('/horario', (req, res) => {
+app.get('/horario', authenticateToken, (req, res) => {
     try {
         // URL de la cloud function que proporciona el horario
         const functionUrl = 'https://us-central1-proyecto-3-soa.cloudfunctions.net/get-all-bookings-function';
@@ -45,7 +51,7 @@ app.get('/horario', (req, res) => {
 });
 
 // Ruta para agregar una reserva
-app.post('/post-horario', (req, res) => {
+app.post('/post-horario', authenticateToken, (req, res) => {
     try {
         const { user, email, hora, dia, mes, anio, numero_personas } = req.body;
 
@@ -79,7 +85,7 @@ app.post('/post-horario', (req, res) => {
 });
 
 // Ruta para actualizar una reserva
-app.put('/put-horario', (req, res) => {
+app.put('/put-horario', authenticateToken, (req, res) => {
     try {
         const { user, email, hora, dia, mes, anio, numero_personas } = req.body;
 
@@ -113,7 +119,7 @@ app.put('/put-horario', (req, res) => {
 });
 
 // Ruta para eliminar una reserva
-app.delete('/delete-horario', (req, res) => {
+app.delete('/delete-horario', authenticateToken, (req, res) => {
     try {
         const { user, email, hora, dia, mes, anio } = req.body;
 
@@ -145,7 +151,7 @@ app.delete('/delete-horario', (req, res) => {
         res.status(500).json({ error: 'Error al eliminar la reserva' });
     }
 });
-app.get('/menu', (req, res) => {
+app.get('/menu', authenticateToken, (req, res) => {
     try {
         // URL de la cloud function que proporciona el horario
         const functionUrl = 'https://us-central1-frontend-cloud-function.cloudfunctions.net/function-1';
@@ -174,7 +180,7 @@ app.get('/menu', (req, res) => {
 });
 
 // Ruta para obtener recomendaciones de comida (versión 1)
-app.get('/comida1', async (req, res) => {
+app.get('/comida1', authenticateToken, async (req, res) => {
     try {
         const value1 = req.query.value1;
         const value2 = req.query.value2;
@@ -196,7 +202,7 @@ app.get('/comida1', async (req, res) => {
 });
 
 // Ruta para obtener recomendaciones de comida (versión 2)
-app.get('/comida2', async (req, res) => {
+app.get('/comida2', authenticateToken, async (req, res) => {
     try {
         const type = req.query.type;
         const value = req.query.value;
@@ -217,7 +223,7 @@ app.get('/comida2', async (req, res) => {
     }
 });
 
-app.post('/feedback', async (req, res) => {
+app.post('/feedback', authenticateToken, async (req, res) => {
     try {
         // Obtén el texto del cuerpo de la solicitud
         const text = req.body.text;
@@ -248,7 +254,7 @@ app.post('/feedback', async (req, res) => {
     }
 });
 
-app.post('/register', async (req, res) => {
+app.post('/register', authenticateToken, async (req, res) => {
     try {
         const { user, email, password } = req.body;
 
@@ -281,7 +287,7 @@ app.post('/register', async (req, res) => {
 });
 
 // Ruta para el inicio de sesión
-app.post('/login', async (req, res) => {
+app.post('/login', authenticateToken, async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -318,7 +324,7 @@ app.post('/login', async (req, res) => {
 });
 
 // Ruta para eliminar cuenta
-app.post('/remove', async (req, res) => {
+app.post('/remove', authenticateToken, async (req, res) => {
     try {
         const { user, email, password } = req.body;
 
@@ -351,7 +357,7 @@ app.post('/remove', async (req, res) => {
 });
 
 // Ruta para recuperar cuenta
-app.post('/recovery', async (req, res) => {
+app.post('/recovery', authenticateToken, async (req, res) => {
     try {
         const { email } = req.body;
 
