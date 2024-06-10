@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Google Cloud Function using Express.js",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.2",
+    "node-fetch": "^3.2.0"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "16"
+  }
+}

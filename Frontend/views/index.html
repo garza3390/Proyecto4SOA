@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú Interactivo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    .user_name {
+      text-align: center;
+    }
+
+    #menu {
+      background-color: #fff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin: 20px auto;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    input[type="time"],
+    button {
+      padding: 8px;
+      margin-bottom: 10px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    a {
+      display: block;
+      margin-top: 20px;
+      text-align: center;
+      color: #007bff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    #imageContainer {
+      text-align: center;
+    }
+
+    img {
+      max-width: 30%; 
+      max-height: 30%; 
+      display: inline-block;
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 20px;      
+    }
+
+    .header h1 {
+      margin: 0;
+    }
+
+    .header button {
+      padding: 10px 20px;
+      background-color: #90abc7;
+      color: #fff;
+      border: none;
+      border-radius: 100%;
+      cursor: pointer;
+      font-size: 16px;
+      width: 500px;
+    }
+
+    .header button:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>  
+  <div class="header">
+    <button id="logout-button" style="display: none;" onclick="cerrarSesion()">Cerrar sesión</button>
+  </div>
+
+  <h1>Bienvenido</h1>
+  <div class="user_name" id="user-info"></div>
+  <a href="/frontend/menu" id="menu-link">* Ver el menú *</a>
+  <a href="/frontend/login" id="login-link">Iniciar sesión</a>
+
+  <div id="imageContainer">
+    <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/restaurant-logo-design-template-e28d2fe026c8df7d1e4bf636c33d954c_screen.jpg?ts=1595420913" alt="logo">
+  </div>
+
+  <script>
+    // Función para obtener el nombre de usuario del Local Storage
+    function getLoggedInUserName() {
+      return localStorage.getItem('username');
+    }
+
+    // Función para mostrar el nombre de usuario en la página
+    function displayUserName() {
+      const userInfoContainer = document.getElementById('user-info');
+      const loginLink = document.getElementById('login-link');
+      const username = getLoggedInUserName();
+      if (username) {
+        userInfoContainer.textContent = username;
+        loginLink.style.display = 'none';
+      } else {
+        userInfoContainer.textContent = '';
+        loginLink.style.display = 'block';
+      }
+    }
+
+    function cerrarSesion() {
+      localStorage.removeItem("username");
+      window.location.href = "/frontend/";
+    }
+
+    function toggleLogoutButton() {
+      const logoutButton = document.getElementById("logout-button");
+      const isLoggedIn = getLoggedInUserName() !== null;
+
+      if (isLoggedIn) {
+        logoutButton.style.display = "block";
+      } else {
+        logoutButton.style.display = "none";
+      }
+    }
+
+    // Llamar a la función para mostrar el nombre de usuario al cargar la página
+    window.onload = function() {
+      displayUserName();
+      toggleLogoutButton();
+    };
+  </script>
+</body>
+</html>

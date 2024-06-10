@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    #emoji-display {
+      font-size: 3rem;
+      margin-bottom: 20px;
+    }
+
+    #generate-button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    #generate-button:hover {
+      background-color: #0056b3;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Su opinión es importante para nosotros</h1>
+    <input id="opinion" type="text" placeholder=">>> ">
+    <div id="emoji-display">😊</div>
+    <button id="generate-button">Enviar comentario</button>
+    <div id="user-info"></div> <!-- Para mostrar el nombre de usuario -->
+
+    <br>
+    <br>
+
+    <a href="/frontend/">Volver al inicio</a>
+  </div>
+
+  <script>
+    // Función para obtener el nombre de usuario del Local Storage
+    function getLoggedInUserName() {
+      return localStorage.getItem('username');
+    }
+
+    // Función para mostrar el nombre de usuario en la página
+    function displayUserName() {
+      const userInfoContainer = document.getElementById('user-info');
+      const username = getLoggedInUserName();
+      if (username) {
+        userInfoContainer.textContent = 'Bienvenido, ' + username;
+      }
+    }
+
+    // Llamar a la función para mostrar el nombre de usuario al cargar la página
+    window.onload = function() {
+      displayUserName();
+    };
+
+    // Función para mostrar el emoji según la emoción
+    function mostrarEmojiSegunEmocion(score) {
+        let emocion = "";
+        
+        if (score < -0.70) {
+            emocion = "Molesto";
+        } else if (score < -0.20) {
+            emocion = "Triste";
+        } else if (score < 0.20) {
+            emocion = "Serio";
+        } else if (score < 0.70) {
+            emocion = "Comodo";
+        } else {
+            emocion = "Feliz";
+        }
+
+        // Mapeo de emociones a emojis
+        const emojis = {
+            "Molesto": '😡',
+            "Triste": '😢',
+            "Serio": '😐',
+            "Comodo": '😊',
+            "Feliz": '😄'
+        };
+
+        return emojis[emocion] || emojis["Serio"]; // Si no se encuentra la emoción, se muestra el emoji neutro
+    }
+
+    // Función para analizar el sentimiento del comentario
+    function analizarSentimiento() {
+      const opinion = document.getElementById('opinion').value;
+      //const apiUrl = 'https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/feedback';
+      const apiUrl = 'https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/feedback';
+      // Objeto con la información de la solicitud
+      const requestOptions = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ text: opinion })
+      };
+
+      // Realizar la solicitud fetch al API
+      fetch(apiUrl, requestOptions)
+          .then(response => {
+              if (!response.ok) {
+                  throw new Error('Error en la solicitud: ' + response.status);
+              }
+              return response.json();
+          })
+          .then(data => {
+              // Una vez que se recibe la respuesta JSON del API
+              const score = data.score; // Obtener el valor de score del JSON
+              const emoji = mostrarEmojiSegunEmocion(score); // Calcular el emoji correspondiente
+              mostrarEmoji(emoji); // Mostrar el emoji en la interfaz
+          })
+          .catch(error => {
+              console.error('Error en la solicitud:', error);
+              // Mostrar un mensaje de error al usuario
+              alert('Hubo un error al procesar su solicitud. Por favor, inténtelo de nuevo más tarde.');
+          });
+    }
+
+    // Función para mostrar el emoji en la interfaz
+    function mostrarEmoji(emoji) {
+      const emojiDisplay = document.getElementById('emoji-display');
+      emojiDisplay.textContent = emoji;
+    }
+
+    // Obtener el botón y añadir un event listener para generar y mostrar el emoji al hacer clic
+    const generateButton = document.getElementById('generate-button');
+    generateButton.addEventListener('click', analizarSentimiento);
+  </script>
+</body>
+</html>

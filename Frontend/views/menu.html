@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menú del Restaurante</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+    
+    #menu-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      text-align: center; /* Alineación centrada del contenido */
+    }
+
+    h1, h2 {
+      text-align: center;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    li {
+      margin-bottom: 10px;
+    }
+
+    a {
+      text-decoration: none;
+      color: #007bff;
+    }
+
+    button {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Estilos para el contenedor del enlace */
+    #link-container {
+      margin-top: 20px; /* Espacio entre el enlace y los demás elementos */
+    }
+  </style>
+</head>
+<body>
+  <div id="menu-container">
+    <h1>Menú del Restaurante</h1>
+  
+    <div id="menu">
+      <h2>Bebidas</h2>
+      <ul id="bebidas">
+      </ul>
+    
+      <h2>Platos Principales</h2>
+      <ul id="platos_principales">
+      </ul>
+    
+      <h2>Postres</h2>
+      <ul id="postres">
+      </ul>
+    </div>
+
+    
+    <div id="link-container">
+      <a href="/frontend/recomendation"><button>Recomendación del chef</button></a>
+    </div>
+
+    <a href="/frontend/">Volver al inicio</a>
+  </div>
+
+  <script>
+
+    // Función para obtener el nombre de usuario del Local Storage
+    function getLoggedInUserName() {
+      return localStorage.getItem('username');
+    }
+    
+    // Función para obtener los datos de la API
+    function obtenerDatosAPI(url, callback) {
+      fetch(url)
+        .then(response => response.json())
+        .then(data => callback(data))
+        .catch(error => console.error('Error al obtener los datos de la API:', error));
+    }
+
+    // Función para generar la lista de platos
+    function generarListaPlatos(platos, contenedorId) {
+      var ul = document.getElementById(contenedorId);
+      platos.forEach(function(plato) {
+        var li = document.createElement("li");
+        li.textContent = plato;
+        ul.appendChild(li);
+      });
+    }
+
+    // URL de la API
+    var apiUrl = "https://us-central1-proyecto-3-soa.cloudfunctions.net/backend/menu";
+
+    // Llamar a la función para obtener los datos de la API y generar las listas de platos
+    obtenerDatosAPI(apiUrl, function(data) {
+      generarListaPlatos(data.desserts, "postres");
+      generarListaPlatos(data.drinks, "bebidas");
+      generarListaPlatos(data.maindishes, "platos_principales");
+    });
+  </script>
+</body>
+</html>

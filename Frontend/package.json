@@ -1,0 +1,17 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx functions-framework --target=begin"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^3.4.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
