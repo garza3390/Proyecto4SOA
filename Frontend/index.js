@@ -15,5 +15,8 @@ app.get("/reservations", mainController.getReservation.bind(mainController));
 app.get("/reservations_admin", mainController.getReservation_admin.bind(mainController));
 app.get("/feedback", mainController.getFeedback.bind(mainController));
 
-exports.begin = app;
-
+// Start the server
+const PORT = process.env.PORT || 3000; // Use the provided port or default to 3000
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});

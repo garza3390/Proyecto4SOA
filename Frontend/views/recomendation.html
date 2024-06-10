@@ -187,14 +187,14 @@
     <div>
       <a id="reservations-link" style="display: none;" onclick="redirectToReservationPage()">Reservaciones</a>
 
-      <a href="/frontend/">Volver al inicio</a>
+      <a href="/">Volver al inicio</a>
     </div>
   </div>
 
   <script>
     function cerrarSesion() {
       localStorage.removeItem("username");
-      window.location.href = "/frontend/";
+      window.location.href = "/";
     }
 
     function toggleLogoutButton() {
@@ -221,7 +221,7 @@
         const isAdmin = username === 'admin';
 
         // Determinar la URL de la página de reservas correspondiente
-        const reservationPage = isAdmin ? '/frontend/reservations_admin' : '/frontend/reservations';
+        const reservationPage = isAdmin ? '/reservations_admin' : '/reservations';
 
         // Redirigir a la página de reservas correspondiente
         window.location.href = reservationPage;
@@ -332,7 +332,7 @@
     function redirectToReservationPage() {
       const username = getLoggedInUserName();
       const isAdmin = username === "admin";
-      const reservationPage = isAdmin ? "/frontend/reservations_admin" : "/frontend/reservations";
+      const reservationPage = isAdmin ? "/reservations_admin" : "/reservations";
       window.location.href = reservationPage;
     }
 

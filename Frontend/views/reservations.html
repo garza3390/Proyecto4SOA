@@ -125,7 +125,7 @@
 </head>
 <body>
 
-  <a href="/frontend/feedback">Feedback</a>
+  <a href="/feedback">Feedback</a>
   <div class="header">
     <h1>Reservaciones de la semana</h1>
     <button onclick="cerrarSesion()">Cerrar sesión</button>
@@ -188,7 +188,7 @@
     // Función para cerrar sesión
     function cerrarSesion() {
       localStorage.removeItem("username");
-      window.location.href = "/frontend/";
+      window.location.href = "/";
     }
 
     // Función para enviar solicitudes al backend

@@ -122,8 +122,8 @@
 
   <h1>Bienvenido</h1>
   <div class="user_name" id="user-info"></div>
-  <a href="/frontend/menu" id="menu-link">* Ver el menú *</a>
-  <a href="/frontend/login" id="login-link">Iniciar sesión</a>
+  <a href="/menu" id="menu-link">* Ver el menú *</a>
+  <a href="/login" id="login-link">Iniciar sesión</a>
 
   <div id="imageContainer">
     <img src="https://d1csarkz8obe9u.cloudfront.net/posterpreviews/restaurant-logo-design-template-e28d2fe026c8df7d1e4bf636c33d954c_screen.jpg?ts=1595420913" alt="logo">
@@ -151,7 +151,7 @@
 
     function cerrarSesion() {
       localStorage.removeItem("username");
-      window.location.href = "/frontend/";
+      window.location.href = "/";
     }
 
     function toggleLogoutButton() {
