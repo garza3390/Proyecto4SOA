@@ -1,0 +1,129 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+  }
+
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  h2 {
+    margin-top: 20px;
+  }
+
+  input {
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    font-size: 16px;
+  }
+
+  button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  button:hover {
+    background-color: #0056b3;
+  }
+
+  #respuesta {
+    margin-top: 20px;
+  }
+
+  #resultadoTexto {
+    font-size: 18px;
+  }
+
+  a {
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    color: #007bff;
+    text-decoration: none;
+    font-size: 16px;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  .centrar{
+    display: flex; 
+    justify-content: center; 
+    align-items: center;
+  }
+
+  button.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    border: 2px solid #ccc;
+    border-radius: 30px;
+    background-color: #fff;
+    cursor: pointer;
+    outline: none;
+  }
+
+  button.switch:before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #007bff;
+    transition: transform 0.3s;
+  }
+
+  button.switch.checked:before {
+    transform: translateX(30px);
+  }
+
+  .checked button.switch:before {
+    transform: translateX(30px);
+  }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    margin: 0;
+  }
+
+  .header button {
+    padding: 10px 20px;
+    background-color: #90abc7;
+    color: #fff;
+    border: none;
+    border-radius: 100%;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .header button:hover {
+    background-color: #0056b3;
+  }
+  

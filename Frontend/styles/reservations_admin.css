@@ -1,0 +1,113 @@
+.calendar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .day {
+    width: calc(100% / 7); 
+    border: 1px solid #ccc;
+    padding: 10px;
+    cursor: pointer;
+  }
+
+  .hour {
+    margin-bottom: 5px;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .available {
+    background-color: #8BC34A; /* Verde para horas disponibles */
+  }
+
+  .booked {
+    background-color: #FF5722; /* Rojo para horas ocupadas */
+  }
+
+  a {
+    text-decoration: none;
+    color: #007bff;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .header h1 {
+    margin: 0;
+  }
+
+  .header button {
+    padding: 10px 20px;
+    background-color: #90abc7;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .header button:hover {
+    background-color: #0056b3;
+  }
+
+  .select-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+
+  .select-container select {
+    padding: 10px;
+    margin: 0 10px;
+    font-size: 16px;
+  }
+
+  .form-container {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .form-container form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-container input, .form-container select {
+    margin-bottom: 10px;
+    padding: 5px;
+    font-size: 16px;
+  }
+
+  .form-container button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .form-container button:hover {
+    background-color: #45a049;
+    color: #fff;
+  }
+
+  .user_name {
+    text-align: center;
+  }
+
+  .buscarButton {
+    background-color: #45a049;
+    color: #fff;
+  }
+  
