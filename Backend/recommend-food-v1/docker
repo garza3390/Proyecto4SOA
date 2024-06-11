@@ -1,0 +1,12 @@
+
+FROM python:3.9-slim
+
+WORKDIR /recommend-food-v1
+
+COPY rec1.py requirements.txt db.json ./
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+EXPOSE 5000
+
+CMD ["python", "rec1.py"]
