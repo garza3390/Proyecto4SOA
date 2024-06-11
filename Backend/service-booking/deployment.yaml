@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-booking-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-booking
+  template:
+    metadata:
+      labels:
+        app: service-booking
+    spec:
+      containers:
+      - name: service-booking
+        image: service-booking-image:latest
+        ports:
+        - containerPort: 5000
+      imagePullSecrets:
+      - name: dockerhub-secret

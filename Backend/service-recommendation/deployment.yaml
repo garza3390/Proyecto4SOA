@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-recommendation-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: service-recommendation
+  template:
+    metadata:
+      labels:
+        app: service-recommendation
+    spec:
+      containers:
+      - name: service-recommendation
+        image: service-recommendation-image:latest
+        ports:
+        - containerPort: 5000
+      imagePullSecrets:
+      - name: dockerhub-secret
