@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-manager-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: db-manager
+  template:
+    metadata:
+      labels:
+        app: db-manager
+    spec:
+      containers:
+      - name: db-manager
+        image: db-manager-image:latest
+        ports:
+        - containerPort: 8080
